@@ -11,4 +11,4 @@ class ClassificationOptions(Options):
         # hyperparameters
         self.lr = 0.001
         self.num_epochs = 10
-        self.hidden_sizes = [784, 392, 98, 10]
+        self.hidden_sizes = [784, 250, 50, 10]

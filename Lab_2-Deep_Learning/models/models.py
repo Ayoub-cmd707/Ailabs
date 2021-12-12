@@ -46,9 +46,10 @@ class Classifier(nn.Module):
             nn.Linear(options.hidden_sizes[1], options.hidden_sizes[2]),
             nn.ReLU()
         )
+        "geen softmax nodig omdat geen nonlineare activatiefunctie gebruiken"
         self.layer3 = nn.Sequential(
-            nn.Linear(options.hidden_sizes[2], options.hidden_sizes[3]),
-            nn.Softmax(dim=1)
+
+            nn.Linear(options.hidden_sizes[2], options.hidden_sizes[3])
         )
         """END TODO"""
 
