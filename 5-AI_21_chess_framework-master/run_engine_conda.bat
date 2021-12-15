@@ -1,1 +1,1 @@
-conda activate YOUR_ENVIRONMENT_NAME & python -m project.chess_engines.example_engine
+conda activate chessAI & python -m project.chess_engines.example_engine
