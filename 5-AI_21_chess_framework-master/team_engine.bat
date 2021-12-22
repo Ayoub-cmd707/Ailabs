@@ -1,1 +1,0 @@
-conda activate chessAI & python -m project.chess_engines.engine

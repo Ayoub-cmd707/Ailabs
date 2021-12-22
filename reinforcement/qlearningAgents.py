@@ -78,7 +78,7 @@ class QLearningAgent(ReinforcementAgent):
         next_action = None
         maximum = -99999999
         for action in actions:
-            qVal = self.getQValue(state, action)
+            qVal = self.qVal[(state, action)]
             if qVal > maximum:
                 maximum, next_action = qVal, action
         return next_action
@@ -193,7 +193,7 @@ class ApproximateQAgent(PacmanQAgent):
         features = self.featExtractor.getFeatures(state, action)
         diff = (reward + self.discount * self.getValue(nextState)) - self.getQValue(state, action)
         for f in features:
-            self.weights[f] = self.weights[f] + self.alpha * diff * features[f]
+            self.weights[f] += self.alpha * diff * features[f]
 
     def final(self, state):
         "Called at the end of each game."
