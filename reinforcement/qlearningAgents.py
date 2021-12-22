@@ -74,14 +74,13 @@ class QLearningAgent(ReinforcementAgent):
           you should return None.
         """
         "*** YOUR CODE HERE ***"
-        actions = self.getLegalActions(state)
-        next_action = None
-        maximum = -99999999
-        for action in actions:
+        nextAction = None
+        max = -99999999
+        for action in self.getLegalActions(state):
             qVal = self.qVal[(state, action)]
-            if qVal > maximum:
-                maximum, next_action = qVal, action
-        return next_action
+            if qVal > max:
+                max, nextAction = qVal, action
+        return nextAction
 
     def getAction(self, state):
         """
@@ -191,9 +190,9 @@ class ApproximateQAgent(PacmanQAgent):
         """
         "*** YOUR CODE HERE ***"
         features = self.featExtractor.getFeatures(state, action)
-        diff = (reward + self.discount * self.getValue(nextState)) - self.getQValue(state, action)
+        sol = (reward + self.discount * self.getValue(nextState)) - self.getQValue(state, action)
         for f in features:
-            self.weights[f] += self.alpha * diff * features[f]
+            self.weights[f] += self.alpha * features[f] * sol
 
     def final(self, state):
         "Called at the end of each game."
