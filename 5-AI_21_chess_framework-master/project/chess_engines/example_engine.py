@@ -10,6 +10,6 @@ if __name__ == "__main__":
     # Create your agent
     agent = ExampleAgent(utility, 5.0)
     # Create the engine
-    engine = UciEngine("Example engine", "Arne", agent)
+    engine = UciEngine("Engine", "Ayoub&Lote", agent)
     # Run the engine (will loop until the game is done or exited)
     engine.engine_operation()

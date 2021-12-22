@@ -11,7 +11,7 @@ class ExampleAgent(Agent):
     def __init__(self, utility: Utility, time_limit_move: float) -> None:
         super().__init__(utility, time_limit_move)
         self.name = "Example search agent"
-        self.author = "J. Duym & A. Troch"
+        self.author = "Aouraghe Ayoub& Tenzin Lote"
         
 
     # This agent does not perform any searching, it sinmply iterates trough all the moves possible and picks the one with the highest utility
