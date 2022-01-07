@@ -11,32 +11,62 @@ class ExampleAgent(Agent):
     def __init__(self, utility: Utility, time_limit_move: float) -> None:
         super().__init__(utility, time_limit_move)
         self.name = "Example search agent"
-        self.author = "Aouraghe Ayoub& Tenzin Lote"
+        self.author = "Aouraghe Ayoub&Tenzin Lote"
         
 
     # This agent does not perform any searching, it sinmply iterates trough all the moves possible and picks the one with the highest utility
     def calculate_move(self, board: chess.Board):
-        
+
         start_time = time.time()
-        
-        # If the agent is playing as black, the utility values are flipped (negative-positive)
-        flip_value = 1 if board.turn == chess.WHITE else -1
-        
-        best_move = random.sample(list(board.legal_moves), 1)[0]
-        best_utility = 0
-        # Loop trough all legal moves
-        for move in list(board.legal_moves):
-            # Check if the maximum calculation time for this move has been reached
+        bestMove = chess.Move.null()
+        bestValue = -99999
+        alpha = -100000
+        beta = 100000
+        for move in board.legal_moves:
             if time.time() - start_time > self.time_limit_move:
+                print("Move Bitch")
                 break
-            # Play the move
             board.push(move)
-            # Determine the value of the board after this move
-            value = flip_value * self.utility.board_value(board)
-            # If this is better than all other previous moves, store this move and its utility
-            if value > best_utility:
-                best_move = move
-                best_utility = value
-            # Revert the board to its original state
+            boardValue = -self.alphabeta(board, -beta, -alpha, 2 - 1)
+            if boardValue > bestValue:
+                bestValue = boardValue;
+                bestMove = move
+            if (boardValue > alpha):
+                alpha = boardValue
             board.pop()
-        return best_move
+        return bestMove
+
+    def alphabeta(self, board: chess.Board, alpha, beta, depthleft):
+        bestscore = -9999
+        if (depthleft == 0):
+            return self.quiesce(board, alpha, beta)
+        for move in board.legal_moves:
+            board.push(move)
+            score = -self.alphabeta(board, -beta, -alpha, depthleft - 1)
+            board.pop()
+            if (score >= beta):
+                return score
+            if (score > bestscore):
+                bestscore = score
+            if (score > alpha):
+                alpha = score
+        return bestscore
+
+    def quiesce(self, board: chess.Board, alpha, beta):
+        stand_pat = Utility.board_value(self, board)
+        if (stand_pat >= beta):
+            return beta
+        if (alpha < stand_pat):
+            alpha = stand_pat
+
+        for move in board.legal_moves:
+            if board.is_capture(move):
+                board.push(move)
+                score = -self.quiesce(board, -beta, -alpha)
+                board.pop()
+
+                if (score >= beta):
+                    return beta
+                if (score > alpha):
+                    alpha = score
+        return alpha

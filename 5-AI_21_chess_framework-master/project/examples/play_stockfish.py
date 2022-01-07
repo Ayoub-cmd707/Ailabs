@@ -15,7 +15,7 @@ def play_stockfish():
     # Define agent here
     white_player = ExampleAgent(ExampleUtility(), 5.0)
     # Enter your path here:
-    black_player = chess.engine.SimpleEngine.popen_uci("C:/Users/ATroch/Documents/stockfish/stockfish.exe")
+    black_player = chess.engine.SimpleEngine.popen_uci("C:\\Users\\Ayoub\\Documents\\stockfish\\stockfish.exe")
     # Determine the skill level of Stockfish:
     black_player.configure({"Skill Level": 1})
     limit = chess.engine.Limit(time=time_limit)
