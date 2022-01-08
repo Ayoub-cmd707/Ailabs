@@ -36,7 +36,7 @@ class ExampleAgent(Agent):
                     print("Move Bitch")
                     break
                 board.push(move)
-                boardValue = -self.minimax(board, 4, flip_value)
+                boardValue = -self.minimax(board, 4,float('inf'),-float('inf'), True)
                 if boardValue > bestValue:
                     bestValue = boardValue;
                     bestMove = move
@@ -44,25 +44,29 @@ class ExampleAgent(Agent):
                 board.pop()
             return bestMove
 
-    def minimax(self,board:chess.Board,depth, maximizing_player):
+    def minimax(self,board:chess.Board,depth,alpha,beta, maximizing_player):
         start_time = time.time()
 
         if depth == 0 or board.is_game_over():
             return self.utility.board_value(board)
         if maximizing_player:
-            value = -float('inf')
+            maxvalue = -float('inf')
             for move in board.legal_moves:
-                
                 board.push(move)
-                value = max(value, self.minimax(board, depth - 1, False))
+                maxvalue = max(maxvalue, self.minimax(board, depth - 1,alpha,beta, False))
+                alpha = max(alpha,maxvalue)
+                if beta <= alpha:
+                    break
                 board.pop()
-            return value
+            return maxvalue
         else:
-            value = float('inf')
+            minimumvalue = float('inf')
             for move in board.legal_moves:
-
                 board.push(move)
-                value = min(value, self.minimax(board, depth - 1, True))
+                minimumvalue = min(minimumvalue, self.minimax(board, depth - 1,alpha,beta, True))
+                beta = min(beta, minimumvalue)
+                if beta <= alpha:
+                    break
                 board.pop()
-            return value
+            return minimumvalue
 
