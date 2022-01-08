@@ -39,7 +39,7 @@ class ExampleAgent(Agent):
                     print("Move Bitch")
                     break
                 board.push(move)
-                boardValue = -self.minimaxAlphaBeta(board, 2, beta, alpha,flip_value)
+                boardValue = -self.minimaxAlphaBeta(board, 3, beta, alpha,flip_value)
                 if boardValue > bestValue:
                     bestValue = boardValue;
                     bestMove = move
@@ -60,7 +60,7 @@ class ExampleAgent(Agent):
                 value = max(value, self.minimaxAlphaBeta(board, depth - 1, beta, alpha, False))
                 board.pop()
                 if (value >= beta):
-                    return beta
+                    return value
                 if (value > alpha):
                     alpha = value
             return value
@@ -72,7 +72,7 @@ class ExampleAgent(Agent):
                 value = min(value, self.minimaxAlphaBeta(board, depth - 1, beta, alpha, True))
                 board.pop()
                 if (value >= beta):
-                    return beta
+                    return value
                 if (value > alpha):
                     alpha = value
             return value
