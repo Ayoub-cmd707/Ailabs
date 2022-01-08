@@ -36,7 +36,7 @@ class ExampleAgent(Agent):
                     print("Move Bitch")
                     break
                 board.push(move)
-                boardValue = -self.minimax(board, 4, flip_value)
+                boardValue = -self.minimax(board, 2, flip_value)
                 if boardValue > bestValue:
                     bestValue = boardValue;
                     bestMove = move
@@ -52,7 +52,7 @@ class ExampleAgent(Agent):
         if maximizing_player:
             value = -float('inf')
             for move in board.legal_moves:
-                
+
                 board.push(move)
                 value = max(value, self.minimax(board, depth - 1, False))
                 board.pop()
