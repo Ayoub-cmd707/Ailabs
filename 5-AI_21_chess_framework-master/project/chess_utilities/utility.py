@@ -87,26 +87,21 @@ class Utility(ABC):
             -30, -40, -40, -50, -50, -40, -40, -30,
             -30, -40, -40, -50, -50, -40, -40, -30]
 
-        material = 100 * (wp - bp) + 320 * (wn - bn) + 330 * (wb - bb) + 500 * (wr - br) + 900 * (wq - bq)
+        material = 100 * (wp - bp) + 290 * (wn - bn) + 350 * (wb - bb) + 550 * (wr - br) + 999 * (wq - bq)
 
         pawnsq = sum([pawntable[i] for i in board.pieces(chess.PAWN, chess.WHITE)])
-        pawnsq = pawnsq + sum([-pawntable[chess.square_mirror(i)]
-                               for i in board.pieces(chess.PAWN, chess.BLACK)])
+        pawnsq = pawnsq + sum([-pawntable[chess.square_mirror(i)] for i in board.pieces(chess.PAWN, chess.BLACK)])
         knightsq = sum([knightstable[i] for i in board.pieces(chess.KNIGHT, chess.WHITE)])
-        knightsq = knightsq + sum([-knightstable[chess.square_mirror(i)]
-                                   for i in board.pieces(chess.KNIGHT, chess.BLACK)])
+        knightsq = knightsq + sum([-knightstable[chess.square_mirror(i)] for i in board.pieces(chess.KNIGHT, chess.BLACK)])
         bishopsq = sum([bishopstable[i] for i in board.pieces(chess.BISHOP, chess.WHITE)])
-        bishopsq = bishopsq + sum([-bishopstable[chess.square_mirror(i)]
-                                   for i in board.pieces(chess.BISHOP, chess.BLACK)])
+        bishopsq = bishopsq + sum([-bishopstable[chess.square_mirror(i)] for i in board.pieces(chess.BISHOP, chess.BLACK)])
         rooksq = sum([rookstable[i] for i in board.pieces(chess.ROOK, chess.WHITE)])
-        rooksq = rooksq + sum([-rookstable[chess.square_mirror(i)]
-                               for i in board.pieces(chess.ROOK, chess.BLACK)])
+        rooksq = rooksq + sum([-rookstable[chess.square_mirror(i)] for i in board.pieces(chess.ROOK, chess.BLACK)])
         queensq = sum([queenstable[i] for i in board.pieces(chess.QUEEN, chess.WHITE)])
-        queensq = queensq + sum([-queenstable[chess.square_mirror(i)]
-                                 for i in board.pieces(chess.QUEEN, chess.BLACK)])
+        queensq = queensq + sum([-queenstable[chess.square_mirror(i)] for i in board.pieces(chess.QUEEN, chess.BLACK)])
+
         kingsq = sum([kingstable[i] for i in board.pieces(chess.KING, chess.WHITE)])
-        kingsq = kingsq + sum([-kingstable[chess.square_mirror(i)]
-                               for i in board.pieces(chess.KING, chess.BLACK)])
+        kingsq = kingsq + sum([-kingstable[chess.square_mirror(i)] for i in board.pieces(chess.KING, chess.BLACK)])
 
         eval = material + pawnsq + knightsq + bishopsq + rooksq + queensq + kingsq
         if board.turn:
