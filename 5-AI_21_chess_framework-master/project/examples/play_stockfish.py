@@ -9,12 +9,12 @@ import chess.pgn
 """ An agent plays a game against the stockfish engine """
 def play_stockfish():
     
-    time_limit = 5.0
+    time_limit = 0.5
         
     # Setup
     board = chess.Board()
     # Define agent here
-    white_player = ExampleAgent(Utility(), time_limit)
+    white_player = ExampleAgent(Utility(), 5.0)
     # Enter your path here:
     black_player = chess.engine.SimpleEngine.popen_uci("C:\\Users\\Ayoub\\Documents\\stockfish\\stockfish.exe")
     # Determine the skill level of Stockfish:

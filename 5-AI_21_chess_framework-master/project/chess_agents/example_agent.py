@@ -19,6 +19,8 @@ class ExampleAgent(Agent):
 
     # This agent does not perform any searching, it sinmply iterates trough all the moves possible and picks the one with the highest utility
     def calculate_move(self, board: chess.Board):
+
+        flip_value = True if board.turn == chess.WHITE else False
         try:
             move = chess.polyglot.MemoryMappedReader(os.path.dirname(__file__).split("\project")[0] + "\\GMopenings.bin").weighted_choice(board).move
             print("yes sir")
@@ -27,59 +29,40 @@ class ExampleAgent(Agent):
             start_time = time.time()
 
             bestMove = chess.Move.null()
-            bestValue = -99999
-            alpha = -100000
-            beta = 100000
+            bestValue = -999999999
+
             for move in board.legal_moves:
                 if time.time() - start_time > self.time_limit_move:
                     print("Move Bitch")
                     break
                 board.push(move)
-                boardValue = -self.alphabeta(board, -beta, -alpha, 3)
+                boardValue = -self.minimax(board, 4, flip_value)
                 if boardValue > bestValue:
                     bestValue = boardValue;
                     bestMove = move
-                if (boardValue > alpha):
-                    alpha = boardValue
+
                 board.pop()
             return bestMove
 
-    def alphabeta(self, board: chess.Board, alpha, beta, depthleft):
-        bestscore = -9999
-        if (depthleft == 0):
-            return self.quiesce(board, alpha, beta)
-        for move in board.legal_moves:
+    def minimax(self,board:chess.Board,depth, maximizing_player):
+        start_time = time.time()
 
-            board.push(move)
-            score = -self.alphabeta(board, -beta, -alpha, depthleft - 1 )
-            board.pop()
-            if (score >= beta):
-                return score
-            if (score > bestscore):
-                bestscore = score
-            if (score > alpha):
-                alpha = score
-        return bestscore
-
-    def quiesce(self, board: chess.Board, alpha, beta):
-        
-
-        stand_pat = Utility.board_value(self, board)
-        if (stand_pat >= beta):
-            return beta
-        if (alpha < stand_pat):
-            alpha = stand_pat
-
-        for move in board.legal_moves:
-
-
-            if board.is_capture(move):
+        if depth == 0 or board.is_game_over():
+            return self.utility.board_value(board)
+        if maximizing_player:
+            value = -float('inf')
+            for move in board.legal_moves:
+                
                 board.push(move)
-                score = -self.quiesce(board, -beta, -alpha)
+                value = max(value, self.minimax(board, depth - 1, False))
                 board.pop()
+            return value
+        else:
+            value = float('inf')
+            for move in board.legal_moves:
 
-                if (score >= beta):
-                    return beta
-                if (score > alpha):
-                    alpha = score
-        return alpha
+                board.push(move)
+                value = min(value, self.minimax(board, depth - 1, True))
+                board.pop()
+            return value
+
