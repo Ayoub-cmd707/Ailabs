@@ -9,7 +9,7 @@ import chess.pgn
 """ An agent plays a game against the stockfish engine """
 def play_stockfish():
     
-    time_limit = 0.5
+    time_limit = 1.0
         
     # Setup
     board = chess.Board()

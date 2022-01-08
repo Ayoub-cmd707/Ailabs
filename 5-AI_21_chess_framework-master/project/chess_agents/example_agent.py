@@ -22,31 +22,33 @@ class ExampleAgent(Agent):
 
         flip_value = True if board.turn == chess.WHITE else False
         try:
-            move = chess.polyglot.MemoryMappedReader(os.path.dirname(__file__).split("\project")[0] + "\\GMopenings.bin").weighted_choice(board).move
+            openingMove = chess.polyglot.MemoryMappedReader(os.path.dirname(__file__).split("\project")[0] + "\\GMopenings.bin").weighted_choice(board).move
             print("yes sir")
-            return move
+            return openingMove
         except:
             start_time = time.time()
 
             bestMove = chess.Move.null()
             bestValue = -float('inf')
 
+            alpha = -999999999
+            beta = 999999999
 
             for move in board.legal_moves:
                 if time.time() - start_time > self.time_limit_move:
                     print("Move Bitch")
                     break
                 board.push(move)
-                boardValue = -self.minimax(board, 2, flip_value)
+                boardValue = -self.minimaxAlphaBeta(board, 2, beta, alpha,flip_value)
                 if boardValue > bestValue:
                     bestValue = boardValue;
                     bestMove = move
-
+                if (boardValue > alpha):
+                    alpha = boardValue
                 board.pop()
             return bestMove
 
-    def minimax(self,board:chess.Board,depth, maximizing_player):
-        start_time = time.time()
+    def minimaxAlphaBeta(self,board:chess.Board, depth, alpha, beta, maximizing_player):
 
         if depth == 0 or board.is_game_over():
             return self.utility.board_value(board)
@@ -55,15 +57,23 @@ class ExampleAgent(Agent):
             for move in board.legal_moves:
 
                 board.push(move)
-                value = max(value, self.minimax(board, depth - 1, False))
+                value = max(value, self.minimaxAlphaBeta(board, depth - 1, beta, alpha, False))
                 board.pop()
+                if (value >= beta):
+                    return beta
+                if (value > alpha):
+                    alpha = value
             return value
         else:
             value = float('inf')
             for move in board.legal_moves:
 
                 board.push(move)
-                value = min(value, self.minimax(board, depth - 1, True))
+                value = min(value, self.minimaxAlphaBeta(board, depth - 1, beta, alpha, True))
                 board.pop()
+                if (value >= beta):
+                    return beta
+                if (value > alpha):
+                    alpha = value
             return value
 
