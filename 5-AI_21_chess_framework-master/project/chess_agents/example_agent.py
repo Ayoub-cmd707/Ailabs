@@ -29,7 +29,8 @@ class ExampleAgent(Agent):
             start_time = time.time()
 
             bestMove = chess.Move.null()
-            bestValue = -999999999
+            bestValue = -float('inf')
+
 
             for move in board.legal_moves:
                 if time.time() - start_time > self.time_limit_move:
