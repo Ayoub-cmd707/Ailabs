@@ -71,7 +71,7 @@ class ExampleAgent(Agent):
             for move in board.legal_moves:
 
                 board.push(move)
-                value = min(value, self.minimaxAlphaBeta(board, depth - 1, -beta, -alpha, True))
+                value = min(value, self.minimaxAlphaBeta(board, depth - 1, beta, alpha, True))
                 board.pop()
                 if (value >= beta):
                     return value
