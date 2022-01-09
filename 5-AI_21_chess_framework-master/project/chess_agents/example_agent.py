@@ -12,7 +12,7 @@ class ExampleAgent(Agent):
     # Initialize your agent with whatever parameters you want
     def __init__(self, utility: Utility, time_limit_move: float) -> None:
         super().__init__(utility, time_limit_move)
-        self.name = "Example search agent"
+        self.name = "search agent"
         self.author = "Aouraghe Ayoub &Tenzin Lote"
         self.time_limit_move = time_limit_move
         self.utility = utility
@@ -23,7 +23,7 @@ class ExampleAgent(Agent):
         flip_value = True if board.turn == chess.WHITE else False
         try:
             openingMove = chess.polyglot.MemoryMappedReader(os.path.dirname(__file__).split("\project")[0] + "\\GMopenings.bin").weighted_choice(board).move
-            print("yes sir")
+            print("GM openings moves")
             return openingMove
         except:
             start_time = time.time()
@@ -36,10 +36,10 @@ class ExampleAgent(Agent):
 
             for move in board.legal_moves:
                 if time.time() - start_time > self.time_limit_move:
-                    print("Move Bitch")
+                    print("it's time")
                     break
                 board.push(move)
-                boardValue = -self.minimaxAlphaBeta(board, 3, beta, alpha,flip_value)
+                boardValue = -self.minimaxAlphaBeta(board, 2, beta, alpha,flip_value)
                 if boardValue > bestValue:
                     bestValue = boardValue;
                     bestMove = move
@@ -52,6 +52,8 @@ class ExampleAgent(Agent):
 
         if depth == 0 or board.is_game_over():
             return self.utility.board_value(board)
+
+
         if maximizing_player:
             value = -float('inf')
             for move in board.legal_moves:
