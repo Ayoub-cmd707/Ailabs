@@ -51,7 +51,7 @@ class ExampleAgent(Agent):
     def minimaxAlphaBeta(self,board:chess.Board, depth, alpha, beta, maximizing_player):
 
         if depth == 0 or board.is_game_over():
-            return self.utility.board_value(board)
+            return self.quiescence(alpha, beta, board)
 
 
         if maximizing_player:
@@ -59,7 +59,7 @@ class ExampleAgent(Agent):
             for move in board.legal_moves:
 
                 board.push(move)
-                value = max(value, self.minimaxAlphaBeta(board, depth - 1, beta, alpha, False))
+                value = max(value, self.minimaxAlphaBeta(board, depth - 1, -beta, -alpha, False))
                 board.pop()
                 if (value >= beta):
                     return value
@@ -71,7 +71,7 @@ class ExampleAgent(Agent):
             for move in board.legal_moves:
 
                 board.push(move)
-                value = min(value, self.minimaxAlphaBeta(board, depth - 1, beta, alpha, True))
+                value = min(value, self.minimaxAlphaBeta(board, depth - 1, -beta, -alpha, True))
                 board.pop()
                 if (value >= beta):
                     return value
@@ -79,3 +79,25 @@ class ExampleAgent(Agent):
                     alpha = value
             return value
 
+    def quiescence(self, alpha, beta, board: chess.Board):
+        value = Utility.board_value(self, board)
+
+        if (value >= beta):
+            return beta
+
+        if (alpha < value):
+            alpha = value
+
+        for move in board.legal_moves:
+            if board.is_capture(move):
+                board.push(move)
+                q = -self.quiescence(-beta, -alpha, board)
+                board.pop()
+
+                if (q > alpha):
+                    alpha = q
+
+                if (q >= beta):
+                    return beta
+
+        return alpha
