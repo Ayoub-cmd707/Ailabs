@@ -16,16 +16,19 @@ class Utility(ABC):
         if board.is_insufficient_material():
             return 0
 
-        wp = len(board.pieces(chess.PAWN, chess.WHITE))
-        bp = len(board.pieces(chess.PAWN, chess.BLACK))
-        wn = len(board.pieces(chess.KNIGHT, chess.WHITE))
-        bn = len(board.pieces(chess.KNIGHT, chess.BLACK))
-        wb = len(board.pieces(chess.BISHOP, chess.WHITE))
-        bb = len(board.pieces(chess.BISHOP, chess.BLACK))
-        wr = len(board.pieces(chess.ROOK, chess.WHITE))
-        br = len(board.pieces(chess.ROOK, chess.BLACK))
-        wq = len(board.pieces(chess.QUEEN, chess.WHITE))
-        bq = len(board.pieces(chess.QUEEN, chess.BLACK))
+        wpawn = len(board.pieces(chess.PAWN, chess.WHITE))
+        bpawn = len(board.pieces(chess.PAWN, chess.BLACK))
+        wnight = len(board.pieces(chess.KNIGHT, chess.WHITE))
+        bnight = len(board.pieces(chess.KNIGHT, chess.BLACK))
+        wbishop = len(board.pieces(chess.BISHOP, chess.WHITE))
+        bbishop = len(board.pieces(chess.BISHOP, chess.BLACK))
+        wrook = len(board.pieces(chess.ROOK, chess.WHITE))
+        brook = len(board.pieces(chess.ROOK, chess.BLACK))
+        wqueen = len(board.pieces(chess.QUEEN, chess.WHITE))
+        bqueen = len(board.pieces(chess.QUEEN, chess.BLACK))
+        wking = len(board.pieces(chess.KING, chess.WHITE))
+        bking = len(board.pieces(chess.KING, chess.BLACK))
+
 
         pawntable = [
             0, 0, 0, 0, 0, 0, 0, 0,
@@ -87,7 +90,7 @@ class Utility(ABC):
             -30, -40, -40, -50, -50, -40, -40, -30,
             -30, -40, -40, -50, -50, -40, -40, -30]
 
-        material = 100 * (wp - bp) + 290 * (wn - bn) + 350 * (wb - bb) + 550 * (wr - br) + 999 * (wq - bq)
+        totalMaterialValue = 100 * (wpawn - bpawn) + 330 * (wnight - bnight) + 350 * (wbishop - bbishop) + 550 * (wrook - brook) + 999 * (wqueen - bqueen) + 2000 * (wking - wqueen)
 
         pawnsq = sum([pawntable[i] for i in board.pieces(chess.PAWN, chess.WHITE)])
         pawnsq = pawnsq + sum([-pawntable[chess.square_mirror(i)] for i in board.pieces(chess.PAWN, chess.BLACK)])
@@ -103,8 +106,9 @@ class Utility(ABC):
         kingsq = sum([kingstable[i] for i in board.pieces(chess.KING, chess.WHITE)])
         kingsq = kingsq + sum([-kingstable[chess.square_mirror(i)] for i in board.pieces(chess.KING, chess.BLACK)])
 
-        eval = material + pawnsq + knightsq + bishopsq + rooksq + queensq + kingsq
+        v = totalMaterialValue + pawnsq + knightsq + bishopsq + rooksq + queensq + kingsq
+
         if board.turn:
-            return eval
+            return v
         else:
-            return -eval
+            return -v
