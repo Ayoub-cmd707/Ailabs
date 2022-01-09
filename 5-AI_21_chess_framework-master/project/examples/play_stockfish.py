@@ -14,7 +14,7 @@ def play_stockfish():
     # Setup
     board = chess.Board()
     # Define agent here
-    white_player = ExampleAgent(Utility(), 5.0)
+    white_player = ExampleAgent(Utility(), 15.0)
     # Enter your path here:
     black_player = chess.engine.SimpleEngine.popen_uci("C:\\Users\\Ayoub\\Documents\\stockfish\\stockfish.exe")
     # Determine the skill level of Stockfish:
